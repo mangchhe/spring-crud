@@ -2,6 +2,7 @@ package me.hajoo.springcrud.entity;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import me.hajoo.springcrud.dto.UserResponse;
 
 import javax.persistence.*;
 
@@ -23,5 +24,9 @@ public class User {
         this.age = age;
         this.height = height;
         this.weight = weight;
+    }
+
+    public UserResponse entityToUserResponse() {
+        return new UserResponse(id, name, age, height, weight);
     }
 }
