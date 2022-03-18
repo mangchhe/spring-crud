@@ -1,6 +1,7 @@
 package me.hajoo.springcrud.service;
 
 import me.hajoo.springcrud.dto.CreateUserRequest;
+import me.hajoo.springcrud.dto.UserResponse;
 import me.hajoo.springcrud.entity.User;
 import me.hajoo.springcrud.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -37,5 +40,31 @@ class UserServiceImplTest {
         //then
         verify(userRepository, times(1)).save(any());
         assertThat(result).isEqualTo(user);
+    }
+
+    @Test
+    @DisplayName("유저 조회")
+    public void 유저_조회(){
+        //given
+        final List<UserResponse> expected = List.of(
+                new UserResponse(1L, "홍길동", 20, 180, 75),
+                new UserResponse(2L, "홍길동2", 20, 180, 75),
+                new UserResponse(3L, "홍길동3", 20, 180, 75)
+        );
+        given(userRepository.findAll()).willReturn(List.of(
+                new User("홍길동", 20, 180, 75),
+                new User("홍길동2", 20, 180, 75),
+                new User("홍길동3", 20, 180, 75)
+        ));
+
+        //when
+        final List<UserResponse> result = userService.findUsers();
+
+        //then
+        verify(userRepository, times(1)).findAll();
+        assertThat(result).usingRecursiveComparison()
+                .ignoringFields("id")
+                .ignoringCollectionOrder()
+                .isEqualTo(expected);
     }
 }
