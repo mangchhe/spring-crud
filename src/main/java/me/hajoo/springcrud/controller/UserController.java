@@ -2,6 +2,7 @@ package me.hajoo.springcrud.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.hajoo.springcrud.dto.CreateUserRequest;
+import me.hajoo.springcrud.dto.UpdateUserRequest;
 import me.hajoo.springcrud.dto.UserResponse;
 import me.hajoo.springcrud.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -26,5 +27,11 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> findUsers() {
         final List<UserResponse> body = userService.findUsers();
         return ResponseEntity.ok(body);
+    }
+
+    @PostMapping("/profile")
+    public ResponseEntity<String> updateUser(@RequestBody UpdateUserRequest updateUserRequest) {
+        userService.updateUser(updateUserRequest);
+        return ResponseEntity.ok("");
     }
 }

@@ -1,6 +1,7 @@
 package me.hajoo.springcrud.service;
 
 import me.hajoo.springcrud.dto.CreateUserRequest;
+import me.hajoo.springcrud.dto.UpdateUserRequest;
 import me.hajoo.springcrud.dto.UserResponse;
 import me.hajoo.springcrud.entity.User;
 import me.hajoo.springcrud.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -65,6 +67,23 @@ class UserServiceImplTest {
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("id")
                 .ignoringCollectionOrder()
+                .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("유저 수정")
+    public void 유저_수정(){
+        //given
+        final User expected = new User("홍길동2", 21, 185, 80);
+        final UpdateUserRequest request = new UpdateUserRequest(1L, "홍길동2", 21, 185, 80);
+        given(userRepository.findById(1L)).willReturn(Optional.of(new User("홍길동", 20, 180, 75)));
+
+        //when
+        final User result = userService.updateUser(request);
+
+        //then
+        verify(userRepository, times(1)).findById(1L);
+        assertThat(result).usingRecursiveComparison()
                 .isEqualTo(expected);
     }
 }

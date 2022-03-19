@@ -2,11 +2,13 @@ package me.hajoo.springcrud.service;
 
 import lombok.RequiredArgsConstructor;
 import me.hajoo.springcrud.dto.CreateUserRequest;
+import me.hajoo.springcrud.dto.UpdateUserRequest;
 import me.hajoo.springcrud.dto.UserResponse;
 import me.hajoo.springcrud.entity.User;
 import me.hajoo.springcrud.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,5 +36,24 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .map(User::entityToUserResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public User updateUser(final UpdateUserRequest updateUserRequest) {
+        final User user = userRepository.findById(updateUserRequest.getId()).orElseThrow(IllegalArgumentException::new);
+        if (StringUtils.hasText(updateUserRequest.getName())) {
+            user.changeName(updateUserRequest.getName());
+        }
+        if (updateUserRequest.getAge() != null) {
+            user.changeAge(updateUserRequest.getAge());
+        }
+        if (updateUserRequest.getWeight() != null) {
+            user.changeWeight(updateUserRequest.getWeight());
+        }
+        if (updateUserRequest.getHeight() != null) {
+            user.changeHeight(updateUserRequest.getHeight());
+        }
+        return user;
     }
 }
