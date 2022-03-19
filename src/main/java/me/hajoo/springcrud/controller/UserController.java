@@ -8,6 +8,7 @@ import me.hajoo.springcrud.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("")
-    public ResponseEntity<String> createUser(@RequestBody CreateUserRequest createUserRequest) {
+    public ResponseEntity<String> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
         userService.createUser(createUserRequest);
         return ResponseEntity.ok("");
     }
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<String> updateUser(@RequestBody UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<String> updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
         userService.updateUser(updateUserRequest);
         return ResponseEntity.ok("");
     }
