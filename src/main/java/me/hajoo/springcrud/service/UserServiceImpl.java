@@ -6,6 +6,7 @@ import me.hajoo.springcrud.dto.UpdateUserRequest;
 import me.hajoo.springcrud.dto.UserResponse;
 import me.hajoo.springcrud.entity.User;
 import me.hajoo.springcrud.repository.UserRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -55,5 +56,16 @@ public class UserServiceImpl implements UserService {
             user.changeHeight(updateUserRequest.getHeight());
         }
         return user;
+    }
+
+    @Override
+    @Transactional
+    public Long deleteUser(final Long userId) {
+        try {
+            userRepository.deleteById(userId);
+            return userId;
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException("잘못된 유저 id 입니다.");
+        }
     }
 }
