@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("")
-    public ResponseEntity<String> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
+    public ResponseEntity<String> createUser(@RequestBody @Valid final CreateUserRequest createUserRequest) {
         userService.createUser(createUserRequest);
         return ResponseEntity.ok("");
     }
@@ -31,13 +31,13 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public ResponseEntity<String> updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
+    public ResponseEntity<String> updateUser(@RequestBody @Valid final UpdateUserRequest updateUserRequest) {
         userService.updateUser(updateUserRequest);
         return ResponseEntity.ok("");
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable final Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("");
     }
