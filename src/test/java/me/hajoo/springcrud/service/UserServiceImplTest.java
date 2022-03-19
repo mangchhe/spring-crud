@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -85,5 +85,30 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).findById(1L);
         assertThat(result).usingRecursiveComparison()
                 .isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("유저 삭제 실패")
+    public void 유저_삭제_실패(){
+        //given
+        willThrow(IllegalArgumentException.class).given(userRepository).deleteById(1L);
+
+        //when, then
+        assertThatThrownBy(() -> userService.deleteUser(1L))
+                .isInstanceOf(IllegalArgumentException.class);
+        verify(userRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("유저 삭제 성공")
+    public void 유저_삭제_성공(){
+        //given
+        willDoNothing().given(userRepository).deleteById(1L);
+
+        //when
+        final Long result = userService.deleteUser(1L);
+
+        //then
+        assertThat(result).isEqualTo(1L);
     }
 }

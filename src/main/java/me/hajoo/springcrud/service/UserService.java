@@ -12,4 +12,5 @@ public interface UserService {
     User createUser(CreateUserRequest createUserRequest);
     List<UserResponse> findUsers();
     User updateUser(UpdateUserRequest updateUserRequest);
+    Long deleteUser(Long userId);
 }
