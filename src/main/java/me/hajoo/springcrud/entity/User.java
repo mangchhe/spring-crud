@@ -3,12 +3,14 @@ package me.hajoo.springcrud.entity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.hajoo.springcrud.dto.UserResponse;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicUpdate
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +31,9 @@ public class User {
     public UserResponse entityToUserResponse() {
         return new UserResponse(id, name, age, height, weight);
     }
+
+    public void changeName(String name) { this.name = name; }
+    public void changeAge(Integer age) { this.age = age; }
+    public void changeHeight(Integer height) { this.height = height; }
+    public void changeWeight(Integer weight) { this.weight = weight; }
 }
